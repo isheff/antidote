@@ -20,9 +20,7 @@
         vectorclock,
         antidote_pb_codec,
         antidote_crdt,
-        ranch,
-        syntax_tools,
-        compiler
+        ranch
     ]},
 
   {mod, { antidote_app, []}},
