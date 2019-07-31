@@ -9,7 +9,6 @@
                   stdlib,
                   riak_core,
                   erlzmq,
-                  rand_compat,
                   runtime_tools,
                   tools,
                   prometheus,

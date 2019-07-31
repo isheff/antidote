@@ -21,7 +21,6 @@
   {pkg,<<"prometheus_process_collector">>,<<"1.4.3">>},
   0},
  {<<"ranch">>,{pkg,<<"ranch">>,<<"1.7.1">>},0},
- {<<"rand_compat">>,{pkg,<<"rand_compat">>,<<"0.0.3">>},0},
  {<<"riak_core">>,
   {git,"https://github.com/AntidoteDB/riak_core",
        {ref,"a26124d4e9b10a12a7a55e8a94a9df2b3704a1dc"}},
@@ -45,6 +44,5 @@
  {<<"prometheus">>, <<"1E96073B3ED7788053768FEA779CBC896DDC3BDD9BA60687F2AD50B252AC87D6">>},
  {<<"prometheus_process_collector">>, <<"657386E8F142FC817347D95C1F3A05AB08710F7DF9E7F86DB6FACAED107ED929">>},
  {<<"ranch">>, <<"6B1FAB51B49196860B733A49C07604465A47BDB78AA10C1C16A3D199F7F8C881">>},
- {<<"rand_compat">>, <<"011646BC1F0B0C432FE101B816F25B9BBB74A085713CEE1DAFD2D62E9415EAD3">>},
  {<<"vectorclock">>, <<"6C4A9D44895F51BB99910DBE31FC691BF05FA6B2BF84986F6E3BDE4BD18F6CBA">>}]}
 ].
