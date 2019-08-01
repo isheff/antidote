@@ -90,27 +90,12 @@ register_pre_hook(Bucket, Module, Function) ->
     register_hook(?PREFIX_PRE, Bucket, Module, Function).
 
 %% Overwrites the previous commit hook
-register_hook(Prefix, Bucket, Module, Function) ->
-    case erlang:function_exported(Module, Function, 1) of
-        true ->
-            riak_core_metadata:put(Prefix, Bucket, {Module, Function}),
-            ok;
-        false ->
-            {error, function_not_exported}
-    end.
+register_hook(_Prefix, _Bucket, _Module, _Function) -> ok.
 
 -spec unregister_hook(pre_commit | post_commit, bucket()) -> ok.
-unregister_hook(pre_commit, Bucket) ->
-    riak_core_metadata:delete(?PREFIX_PRE, Bucket);
+unregister_hook(_, _Bucket) -> ok.
 
-unregister_hook(post_commit, Bucket) ->
-    riak_core_metadata:delete(?PREFIX_POST, Bucket).
-
-get_hooks(pre_commit, Bucket) ->
-    riak_core_metadata:get(?PREFIX_PRE, Bucket);
-
-get_hooks(post_commit, Bucket) ->
-    riak_core_metadata:get(?PREFIX_POST, Bucket).
+get_hooks(_, _Bucket) -> undefined.
 
 -spec execute_pre_commit_hook(term(), type(), op_param()) ->
         {term(), type(), op_param()} | {error, reason()}.
