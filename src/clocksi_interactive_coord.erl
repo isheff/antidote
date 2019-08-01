@@ -192,12 +192,12 @@ perform_singleitem_update(Clock, Key, Type, Params, Properties) ->
                                 {committed, CommitTime} ->
 
                                     %% Execute post commit hook
-                                    case antidote_hooks:execute_post_commit_hook(Key, Type, Params1) of
-                                        {error, Reason} ->
-                                            ?LOG_INFO("Post commit hook failed. Reason ~p", [Reason]);
-                                        _ ->
-                                            ok
-                                    end,
+%%                                    case antidote_hooks:execute_post_commit_hook(Key, Type, Params1) of
+%%                                        {error, Reason} ->
+%%                                            ?LOG_INFO("Post commit hook failed. Reason ~p", [Reason]);
+%%                                        _ ->
+%%                                            ok
+%%                                    end,
 
                                     TxId = Transaction#transaction.txn_id,
                                     DcId = ?DC_META_UTIL:get_my_dc_id(),
@@ -223,10 +223,10 @@ perform_singleitem_update(Clock, Key, Type, Params, Properties) ->
 
                 {error, Reason} ->
                     {error, Reason}
-            end;
+            end
 
-        {error, Reason} ->
-            {error, Reason}
+%%        {error, Reason} ->
+%%            {error, Reason}
     end.
 
 %% TODO spec
@@ -978,9 +978,9 @@ perform_update(Op, UpdatedPartitions, Transaction, _Sender, ClientOps) ->
 
     %% Execute pre_commit_hook if any
     case antidote_hooks:execute_pre_commit_hook(Key, Type, Update) of
-        {error, Reason} ->
-            ?LOG_DEBUG("Execute pre-commit hook failed ~p", [Reason]),
-            {error, Reason};
+%%        {error, Reason} ->
+%%            ?LOG_DEBUG("Execute pre-commit hook failed ~p", [Reason]),
+%%            {error, Reason};
 
         {Key, Type, PostHookUpdate} ->
 
@@ -1139,8 +1139,8 @@ abort(State = #state{transaction = Transaction,
 execute_post_commit_hooks(Ops) ->
     lists:foreach(fun({Key, Type, Update}) ->
         case antidote_hooks:execute_post_commit_hook(Key, Type, Update) of
-            {error, Reason} ->
-                ?LOG_INFO("Post commit hook failed. Reason ~p", [Reason]);
+%%            {error, Reason} ->
+%%                ?LOG_INFO("Post commit hook failed. Reason ~p", [Reason]);
             _ -> ok
         end
                   end, lists:reverse(Ops)).

@@ -1,5 +1,4 @@
-
--define(BUCKET, <<"antidote">>).
+-define(BUCKET, <<"default">>).
 -define(MASTER, antidote_vnode_master).
 -define(LOGGING_MASTER, logging_vnode_master).
 -define(CLOCKSI_MASTER, clocksi_vnode_master).

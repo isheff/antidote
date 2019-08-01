@@ -459,8 +459,7 @@ set_up_clusters_common(Config) ->
    [Cluster1, Cluster2, Cluster3].
 
 
-bucket(BucketBaseAtom) ->
-    BucketRandomSuffix = [rand:uniform(127)],
-    Bucket = list_to_atom(atom_to_list(BucketBaseAtom) ++ BucketRandomSuffix),
+bucket(_BucketBaseAtom) ->
+    Bucket = list_to_atom("default"),
     ct:log("Using random bucket: ~p", [Bucket]),
     Bucket.

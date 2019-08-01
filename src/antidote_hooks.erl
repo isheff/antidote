@@ -97,38 +97,24 @@ unregister_hook(_, _Bucket) -> ok.
 
 get_hooks(_, _Bucket) -> undefined.
 
--spec execute_pre_commit_hook(term(), type(), op_param()) ->
-        {term(), type(), op_param()} | {error, reason()}.
+%%-spec execute_pre_commit_hook(term(), type(), op_param()) ->
+%%        {term(), type(), op_param()} | {error, reason()}.
 execute_pre_commit_hook({Key, Bucket}, Type, Param) ->
     Hook = get_hooks(pre_commit, Bucket),
     case Hook of
-        undefined ->
-            {{Key, Bucket}, Type, Param};
-        {Module, Function} ->
-            try Module:Function({{Key, Bucket}, Type, Param}) of
-                {ok, Res} -> Res
-            catch
-                _:Reason -> {error, {pre_commit_hook, Reason}}
-            end
+        undefined -> {{Key, Bucket}, Type, Param}
     end;
 %% The following is kept to be backward compatible with the old
 %% interface where buckets are not used
 execute_pre_commit_hook(Key, Type, Param) ->
     {Key, Type, Param}.
 
--spec execute_post_commit_hook(term(), type(), op_param()) ->
-            {term(), type(), op_param()} | {error, reason()}.
+%%-spec execute_post_commit_hook(term(), type(), op_param()) ->
+%%            {term(), type(), op_param()} | {error, reason()}.
 execute_post_commit_hook({Key, Bucket}, Type, Param) ->
     Hook = get_hooks(post_commit, Bucket),
     case Hook of
-        undefined ->
-            {{Key, Bucket}, Type, Param};
-        {Module, Function} ->
-            try Module:Function({{Key, Bucket}, Type, Param}) of
-                {ok, Res} -> Res
-            catch
-                _:Reason -> {error, {post_commit_hook, Reason}}
-            end
+        undefined -> {{Key, Bucket}, Type, Param}
     end;
 execute_post_commit_hook(Key, Type, Param) ->
     {Key, Type, Param}.

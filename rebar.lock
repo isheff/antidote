@@ -22,7 +22,7 @@
  {<<"ranch">>,{pkg,<<"ranch">>,<<"1.7.1">>},0},
  {<<"riak_core">>,
   {git,"https://github.com/AntidoteDB/riak_core",
-       {ref,"89a80ae685ced8117427abe9fb5640005a73be5b"}},
+       {ref,"7c75b83e7f0296396ce4172af2c5b1d8673e1d7a"}},
   0},
  {<<"vectorclock">>,{pkg,<<"vectorclock">>,<<"0.2.0">>},0}]}.
 [
