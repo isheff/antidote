@@ -185,7 +185,9 @@
 -type op() :: {op_name(), op_param()}.
 -type effect() :: term().
 
--type dcid() :: 'undefined' | {atom(),tuple()}. %% TODO, is this the only structure that is returned by riak_core_ring:cluster_name(Ring)?
+
+%% DC Id is the riak_core ring cluster name
+-type dcid() :: undefined | riak_core_ring:riak_core_ring().
 -type snapshot_time() :: 'undefined' | vectorclock:vectorclock().
 -type clock_time() :: non_neg_integer().
 -type dc_and_commit_time() :: {dcid(), clock_time()}.
@@ -216,13 +218,13 @@
 -type crdt() :: term().
 -type val() :: term().
 -type reason() :: atom().
--type index_node() :: {any(), node()}.
+-type index_node() :: {partition_id(), node()}.
 -type preflist() :: riak_core_apl:preflist().
 -type log() :: term().
 -type op_num() :: non_neg_integer().
 -type op_id() :: {op_num(), node()}.
 -type payload() :: term().
--type partition_id() :: ets:tid() | non_neg_integer(). % TODO 19 adding integer basically makes the tid type non-opaque, because some places of the code depend on it being an integer. This dependency should be removed, if possible.
+-type partition_id() :: chash:index_as_int().
 -type log_id() :: [partition_id()].
 -type bucket() :: term().
 -type snapshot() :: term().
@@ -268,4 +270,4 @@
 }).
 -type snapshot_get_response() :: #snapshot_get_response{}.
 
--define(STATS(Type), gen_server:cast(antidote_stats_collector, Type)).
+-define(STATS(Type), case application:get_env(antidote, stats, true) of true -> gen_server:cast(antidote_stats_collector, Type); _ -> ok end).

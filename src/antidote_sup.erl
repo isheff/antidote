@@ -68,11 +68,6 @@ init(_Args) ->
                             permanent, 5000, supervisor,
                             [clockSI_interactive_coord_sup]},
 
-    ClockSIReadSup = {clocksi_readitem_sup,
-                      {clocksi_readitem_sup, start_link, []},
-                      permanent, 5000, supervisor,
-                      [clocksi_readitem_sup]},
-
     MaterializerMaster = {materializer_vnode_master,
                           {riak_core_vnode_master,  start_link,
                            [materializer_vnode]},
@@ -114,6 +109,8 @@ init(_Args) ->
               type => supervisor,
               modules => [antidote_pb_sup]},
 
+    AntidoteStats = ?CHILD(antidote_stats, worker, []),
+
 
     {ok,
      {{one_for_one, 5, 10},
@@ -121,7 +118,6 @@ init(_Args) ->
        LoggingMaster,
        ClockSIMaster,
        ClockSIiTxCoordSup,
-       ClockSIReadSup,
        MaterializerMaster,
        ZMQContextManager,
        InterDcPub,
@@ -136,5 +132,6 @@ init(_Args) ->
        MetaDataSenderSup,
        BCounterManager,
        LogResponseReaderSup,
-       PbSup
+       PbSup,
+       AntidoteStats
        ]}}.

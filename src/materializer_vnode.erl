@@ -95,7 +95,7 @@ start_vnode(I) ->
 %% @doc Read state of key at given snapshot time, this does not touch the vnode process
 %%      directly, instead it just reads from the operations and snapshot tables that
 %%      are in shared memory, allowing concurrent reads.
--spec read(key(), type(), snapshot_time(), txid(), clocksi_readitem_server:read_property_list(), partition_id()) -> {ok, snapshot()} | {error, reason()}.
+-spec read(key(), type(), snapshot_time(), txid(), clocksi_readitem:read_property_list(), partition_id()) -> {ok, snapshot()} | {error, reason()}.
 read(Key, Type, SnapshotTime, TxId, PropertyList, Partition) ->
     OpsCache = get_cache_name(Partition, ops_cache),
     SnapshotCache = get_cache_name(Partition, snapshot_cache),
@@ -228,7 +228,11 @@ handle_handoff_command(?FOLD_REQ{foldfun=Fun, acc0=Acc0},
             Fun(Key1, Key, A)
         end,
     Acc = ets:foldl(F, Acc0, OpsCache),
-    {reply, Acc, State}.
+    {reply, Acc, State};
+
+handle_handoff_command(Command, _Sender, State) ->
+    ?LOG_WARNING("Unexpected access to the materializer while in handoff lifecycle: ~p", [Command]),
+    {noreply, State}.
 
 handoff_starting(_TargetNode, State) ->
     {true, State}.
@@ -302,6 +306,7 @@ load_from_log_to_tables(Partition, State) ->
 loop_until_loaded(Node, LogId, Continuation, Ops, State) ->
     case logging_vnode:get_all(Node, LogId, Continuation, Ops) of
         {error, Reason} ->
+            ?LOG_ERROR("Could not load all entries from log ~p and node ~p: ~p", [LogId, Node, Reason]),
             {error, Reason};
         {NewContinuation, NewOps, OpsDict} ->
             load_ops(OpsDict, State),
@@ -367,7 +372,7 @@ internal_store_ss(Key, Snapshot = #materialized_snapshot{last_op_id = NewOpId}, 
 
 %% @doc This function takes care of reading. It is implemented here for not blocking the
 %% vnode when the write function calls it. That is done for garbage collection.
--spec internal_read(key(), type(), snapshot_time(), txid() | ignore, clocksi_readitem_server:read_property_list(), boolean(), state())
+-spec internal_read(key(), type(), snapshot_time(), txid() | ignore, clocksi_readitem:read_property_list(), boolean(), state())
            -> {ok, snapshot()} | {error, no_snapshot}.
 
 internal_read(Key, Type, MinSnapshotTime, TxId, _PropertyList, ShouldGc, State) ->
