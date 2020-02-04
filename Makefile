@@ -31,6 +31,12 @@ shell2: rel2
 	export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
 	export CONFIG=config2 ; \
 	_build/default/rel/antidote/bin/antidote console ${ARGS}
+
+shellremote: rel
+	export NODE_NAME=antidote@10.132.9.129; \
+	export COOKIE=antidote ; \
+	export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
+	_build/default/rel/antidote/bin/antidote console ${ARGS}
 #shell:
 #	$(REBAR) shell --name='antidote@127.0.0.1' --setcookie antidote --config config/sys-debug.config
 
