@@ -24,6 +24,13 @@ shell: rel
 	export COOKIE=antidote ; \
 	export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
 	_build/default/rel/antidote/bin/antidote console ${ARGS}
+
+shell2: rel2
+	export NODE_NAME=antidote2@127.0.0.1 ; \
+	export COOKIE=antidote ; \
+	export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
+	export CONFIG=config2 ; \
+	_build/default/rel/antidote/bin/antidote console ${ARGS}
 #shell:
 #	$(REBAR) shell --name='antidote@127.0.0.1' --setcookie antidote --config config/sys-debug.config
 
@@ -38,6 +45,11 @@ shell: rel
 #	$(REBAR) auto --name='antidote@127.0.0.1' --setcookie antidote --config config/sys-debug.config
 
 rel:
+	export REBAR_CONFIG="rebar.config" ; \
+	$(REBAR) release
+
+rel2:
+	export REBAR_CONFIG="rebar2.config" ; \
 	$(REBAR) release
 
 relclean:
