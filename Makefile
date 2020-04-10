@@ -9,6 +9,7 @@ compile:
 
 clean:
 	$(REBAR) clean
+	rm -r _build/default/rel/antidote/antidote* || true
 
 distclean: clean relclean
 	$(REBAR) clean --all
