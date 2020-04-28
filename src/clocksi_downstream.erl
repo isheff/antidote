@@ -62,7 +62,12 @@ generate_downstream_op(Transaction, IndexNode, Key, Type, Update, WriteSet) ->
                 antidote_crdt_counter_b ->
                     %% bcounter data-type.
                     bcounter_mgr:generate_downstream(Key, Update, Snapshot);
-                antidote_crdt_generic -> antidote_crdt_generic:downstream(Update, Snapshot, Transaction#transaction.vec_snapshot_time);
+                antidote_crdt_generic ->
+                    antidote_crdt_generic:downstream(
+                        Update,
+                        Snapshot,
+                        Transaction#transaction.vec_snapshot_time,
+                        dc_utilities:get_stable_snapshot());
                 _ ->
                     Type:downstream(Update, Snapshot)
             end
