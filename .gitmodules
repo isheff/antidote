@@ -1,0 +1,6 @@
+[submodule "_checkouts/antidote_crdt"]
+	path = _checkouts/antidote_crdt
+	url = https://github.com/apl-cornell/antidote_crdt.git
+[submodule "_checkouts/antidote_pb_codec"]
+	path = _checkouts/antidote_pb_codec
+	url = https://github.com/apl-cornell/antidote_pb_codec.git
