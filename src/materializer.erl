@@ -35,7 +35,7 @@
 
 -export([
     create_snapshot/1,
-    update_snapshot/3,
+    update_snapshot/4,
     materialize_eager/3,
     check_operations/1,
     check_operation/1,
@@ -48,11 +48,11 @@ create_snapshot(Type) ->
 
 %% @doc Applies an downstream effect to a snapshot of a crdt.
 %%      This function yields an error if the crdt does not have a corresponding update operation.
--spec update_snapshot(type(), snapshot(), effect()) -> {ok, snapshot()} | {error, reason()}.
-update_snapshot(Type, Snapshot, Op) ->
+-spec update_snapshot(type(), snapshot(), effect(), boolean()) -> {ok, snapshot()} | {error, reason()}.
+update_snapshot(Type, Snapshot, Op, IsNewSS) ->
     try
         case Type of
-            antidote_crdt_generic -> Type:snapshot(Op, Snapshot);
+            antidote_crdt_generic when IsNewSS -> Type:snapshot(Op, Snapshot);
             _ -> Type:update(Op, Snapshot)
         end
     catch
@@ -66,7 +66,7 @@ update_snapshot(Type, Snapshot, Op) ->
 materialize_eager(_Type, Snapshot, []) ->
     Snapshot;
 materialize_eager(Type, Snapshot, [Effect | Rest]) ->
-    case update_snapshot(Type, Snapshot, Effect) of
+    case update_snapshot(Type, Snapshot, Effect, false) of
         {error, Reason} ->
             {error, Reason};
         {ok, Result} ->

@@ -93,7 +93,7 @@ materialize(Type, TxId, MinSnapshotTime,
     {ok, OpList, NewLastOp, LastOpCt, IsNewSS} =
         materialize_intern(Type, [], LastOp, FirstId, SnapshotCommitTime, MinSnapshotTime,
                            Ops, TxId, SnapshotCommitTime, false, 0),
-    case apply_operations(Type, Snapshot, 0, OpList) of
+    case apply_operations(Type, Snapshot, 0, OpList, IsNewSS) of
         {ok, NewSS, Count} ->
             {ok, NewSS, NewLastOp, LastOpCt, IsNewSS, Count};
         {error, Reason} ->
@@ -108,14 +108,21 @@ materialize(Type, TxId, MinSnapshotTime,
 %%      OpList: The list of operations to apply
 %%      Output: Either the snapshot with the operations applied to
 %%      it, or an error.
--spec apply_operations(type(), snapshot(), non_neg_integer(), [clocksi_payload()]) ->
+-spec apply_operations(type(), snapshot(), non_neg_integer(), [clocksi_payload()], boolean()) ->
                               {ok, snapshot(), non_neg_integer()} | {error, reason()}.
-apply_operations(_Type, Snapshot, Count, []) ->
+apply_operations(_Type, Snapshot, Count, [], _IsNewSS) ->
     {ok, Snapshot, Count};
-apply_operations(Type, Snapshot, Count, [Op | Rest]) ->
-    case materializer:update_snapshot(Type, Snapshot, Op#clocksi_payload.op_param) of
+apply_operations(Type, Snapshot, Count, [Op], IsNewSS) ->
+    case materializer:update_snapshot(Type, Snapshot, Op#clocksi_payload.op_param, IsNewSS) of
         {ok, NewSnapshot} ->
-            apply_operations(Type, NewSnapshot, Count+1, Rest);
+           {ok, NewSnapshot, Count+1};
+        {error, Reason} ->
+            {error, Reason}
+    end;
+apply_operations(Type, Snapshot, Count, [Op | Rest], IsNewSS) ->
+    case materializer:update_snapshot(Type, Snapshot, Op#clocksi_payload.op_param, false) of
+        {ok, NewSnapshot} ->
+            apply_operations(Type, NewSnapshot, Count+1, Rest, IsNewSS);
         {error, Reason} ->
             {error, Reason}
     end.
