@@ -56,8 +56,7 @@ update_snapshot(Type, Snapshot, Op, IsNewSS) ->
             _ -> Type:update(Op, Snapshot)
         end
     catch
-        _:_:Stacktrace ->
-	    erlang:display(Stacktrace),
+        _:_ ->
             {error, {unexpected_operation, Op, Type}}
     end.
 
@@ -118,7 +117,7 @@ update_pncounter_test() ->
     Counter = create_snapshot(Type),
     ?assertEqual(0, Type:value(Counter)),
     Op = 1,
-    {ok, Counter2} = update_snapshot(Type, Counter, Op),
+    {ok, Counter2} = update_snapshot(Type, Counter, Op, true),
     ?assertEqual(1, Type:value(Counter2)).
 
 %% Testing pn_counter with update log

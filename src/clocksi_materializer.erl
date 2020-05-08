@@ -115,7 +115,7 @@ apply_operations(_Type, Snapshot, Count, [], _IsNewSS) ->
 apply_operations(Type, Snapshot, Count, [Op], IsNewSS) ->
     case materializer:update_snapshot(Type, Snapshot, Op#clocksi_payload.op_param, IsNewSS) of
         {ok, NewSnapshot} ->
-           {ok, NewSnapshot, Count+1};
+            {ok, NewSnapshot, Count+1};
         {error, Reason} ->
             {error, Reason}
     end;
@@ -408,7 +408,7 @@ materializer_clocksi_concurrent_test() ->
                                       [], 0, 3, ignore,
                                       vectorclock:from_list([{2, 2}, {1, 2}]),
                                       Ops, ignore, ignore, false, 0),
-    {ok, PNCounter3, _} = apply_operations(Type, PNCounter, 0, PNCounter2),
+    {ok, PNCounter3, _} = apply_operations(Type, PNCounter, 0, PNCounter2, true),
     ?assertEqual({4, vectorclock:from_list([{1, 2}, {2, 2}])}, {Type:value(PNCounter3), CommitTime2}),
     Snapshot=new(Type),
     SS = #snapshot_get_response{snapshot_time = ignore, ops_list = Ops,
@@ -432,7 +432,7 @@ materializer_clocksi_noop_test() ->
     {ok, PNCounter2, 0, ignore, _SsSave} = materialize_intern(Type, [], 0, 0, ignore,
                                                     vectorclock:from_list([{1, 1}]),
                                                     Ops, ignore, ignore, false, 0),
-    {ok, PNCounter3, _} = apply_operations(Type, PNCounter, 0, PNCounter2),
+    {ok, PNCounter3, _} = apply_operations(Type, PNCounter, 0, PNCounter2, true),
     ?assertEqual(0, Type:value(PNCounter3)).
 
 materializer_eager_clocksi_test()->
