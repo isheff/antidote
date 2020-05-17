@@ -20,6 +20,30 @@ cleantests:
 	rm -f test/multidc/*.beam
 	rm -rf logs/
 
+shellvm1: rel
+        export NODE_NAME=antidote@192.168.1.1 ; \
+        export COOKIE=antidote ; \
+        export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
+        _build/default/rel/antidote/bin/antidote console ${ARGS}
+
+shellvm2: rel
+        export NODE_NAME=antidote@192.168.1.2 ; \
+        export COOKIE=antidote ; \
+        export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
+        _build/default/rel/antidote/bin/antidote console ${ARGS}
+
+shellvm3: rel
+        export NODE_NAME=antidote@192.168.1.3 ; \
+        export COOKIE=antidote ; \
+        export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
+        _build/default/rel/antidote/bin/antidote console ${ARGS}
+
+shellvm4: rel
+        export NODE_NAME=antidote@192.168.1.4 ; \
+        export COOKIE=antidote ; \
+        export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
+        _build/default/rel/antidote/bin/antidote console ${ARGS}
+
 shell: rel
 	export NODE_NAME=antidote@127.0.0.1 ; \
 	export COOKIE=antidote ; \
