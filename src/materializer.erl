@@ -56,7 +56,8 @@ update_snapshot(Type, Snapshot, Op, IsNewSS) ->
             _ -> Type:update(Op, Snapshot)
         end
     catch
-        _:_ ->
+        _:_:Stacktrace ->
+	    io:format("Stacktrace ~p~n", [Stacktrace]),
             {error, {unexpected_operation, Op, Type}}
     end.
 
