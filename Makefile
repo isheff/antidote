@@ -33,8 +33,8 @@ shell2: rel2
 	export CONFIG=config2 ; \
 	_build/default/rel/antidote/bin/antidote console ${ARGS}
 
-shell3: rel
-	export NODE_NAME=antidote3@127.0.0.1 ; \
+shellVar: rel
+	export NODE_NAME=${NODE_NAME} ; \
 	export COOKIE=antidote ; \
 	export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
 	_build/default/rel/antidote/bin/antidote console ${ARGS}
