@@ -23,6 +23,7 @@ cleantests:
 shell: rel
 	export NODE_NAME=antidote@127.0.0.1 ; \
 	export COOKIE=antidote ; \
+	export JAVANODE_NAME=JavaNode; \
 	export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
 	_build/default/rel/antidote/bin/antidote console ${ARGS}
 
@@ -30,11 +31,14 @@ shell2: rel2
 	export NODE_NAME=antidote2@127.0.0.1 ; \
 	export COOKIE=antidote ; \
 	export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
+	export JAVANODE_NAME=JavaNode2; \
 	export CONFIG=config2 ; \
 	_build/default/rel/antidote/bin/antidote console ${ARGS}
 
 shellVar: rel
 	export NODE_NAME=${NODE_NAME} ; \
+	export backend_node=${JAVANODE_NAME}@127.0.0.1; \
+	export JAVANODE_NAME=${JAVANODE_NAME}; \
 	export COOKIE=antidote ; \
 	export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
 	_build/default/rel/antidote/bin/antidote console ${ARGS}
@@ -42,6 +46,7 @@ shellVar: rel
 shellremote: rel
 	export NODE_NAME=antidote@10.132.9.129; \
 	export COOKIE=antidote ; \
+	export JAVANODE_NAME=JavaNode; \
 	export ROOT_DIR_PREFIX=$$NODE_NAME/ ; \
 	_build/default/rel/antidote/bin/antidote console ${ARGS}
 #shell:

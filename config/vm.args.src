@@ -1,4 +1,4 @@
--env backend_node "JavaNode@127.0.0.1"
+-env backend_node ${JAVANODE_NAME}"@127.0.0.1"
 
 ## Name of the node
 -${SHORT_NAME_PREFIX}name ${NODE_NAME}
